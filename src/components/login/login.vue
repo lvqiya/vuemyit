@@ -29,9 +29,10 @@ export default {
         //   不想在异步操作.then中获取结果
           const res = await this.$http.post('login',this.formdata)
           
-            //   console.log(res);
+              console.log(res);
               const{meta:{status,msg},data} = res.data
               if (status === 200) {
+                  const token = localStorage.setItem('token',data.token)
                   this.$router.push({name:'home'})
                   this.$message.success(msg)
               }else{
