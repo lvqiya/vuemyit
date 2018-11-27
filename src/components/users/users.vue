@@ -134,8 +134,8 @@ export default {
         type: "warning"
       })
         .then(async () => {
-          const res = await this.$http.delete(`/users/:id`);
-          console.log(res);
+          const res = await this.$http.delete(`/users/${userID}`);
+          // console.log(res);
           const {
             meta: { status, msg }
           } = res.data;
