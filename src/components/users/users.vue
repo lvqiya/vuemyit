@@ -37,9 +37,9 @@
       </el-table-column>
       <el-table-column label="操作" width="300">
         <template slot-scope="scope">
-          <el-button size="mini" plain type="primary" icon="el-icon-edit" circle></el-button>
+          <el-button size="mini" plain type="primary" icon="el-icon-edit" circle @click="Edituser()"></el-button>
 
-          <el-button size="mini" plain type="danger" icon="el-icon-delete" circle></el-button>
+          <el-button size="mini" plain type="danger" icon="el-icon-delete" circle @click="showdel(scope.row.id)"></el-button>
           <el-button size="mini" plain type="success" icon="el-icon-check" circle></el-button>
         </template>
       </el-table-column>
@@ -69,6 +69,25 @@
         <el-button type="primary" @click=Adduser()>确 定</el-button>
       </div>
     </el-dialog>
+
+
+
+
+     <el-dialog title="编辑用户" :visible.sync="dialogFormVisibleEdit">
+      <el-form :model="form">
+        
+        <el-form-item label="邮箱" label-width=100>
+          <el-input v-model="form.email" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="电话" label-width=100>
+          <el-input v-model="form.mobile" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisibleEdit = false">取 消</el-button>
+        <el-button type="primary" @click=Adduser()>确 定</el-button>
+      </div>
+    </el-dialog>
   </el-card>
 </template>
 
@@ -91,6 +110,7 @@ export default {
       total: 10,
       // 对话框添加
       dialogFormVisibleAdd: false,
+      dialogFormVisibleEdit:false,
       form: {
         username: "",
         password: "",
@@ -104,23 +124,57 @@ export default {
   },
 
   methods: {
+    Edituser(){
+        this.dialogFormVisibleEdit = true;
+    },
+    showdel(userID) {
+      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(async () => {
+          const res = await this.$http.delete(`/users/:id`);
+          console.log(res);
+          const {
+            meta: { status, msg }
+          } = res.data;
+          if (status === 200) {
+            
+            this.loadData();
+          } else {
+            this.$message({
+              type: "success",
+              message: "删除成功!"
+            })
+          }
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    },
+
     async Adduser() {
-      const res = await this.$http.post('/users',this.form)
+      const res = await this.$http.post("/users", this.form);
       console.log(res);
-      const {meta:{status,msg},data} = res.data
-      if (status === 200) {
-        this.dialogFormVisibleAdd = false
-        
-        this.$message.success(msg)
-        this.loadData()
+      const {
+        meta: { status, msg },
+        data
+      } = res.data;
+      if (status === 201) {
+        this.dialogFormVisibleAdd = false;
+
+        this.$message.success(msg);
+        this.loadData();
         for (const key in this.form) {
-          this.form[key] = ''
+          this.form[key] = "";
         }
-        
-      }else{
-        this.$message.error(msg)
+      } else {
+        this.$message.error(msg);
       }
-      
     },
     showAdd() {
       this.dialogFormVisibleAdd = true;
