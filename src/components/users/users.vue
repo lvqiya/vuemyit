@@ -23,8 +23,10 @@
       </el-table-column>
       <el-table-column prop="mobile" label="电话" width="180">
       </el-table-column>
-      <el-table-column prop="create_time" label="创建日期" width="100">
-
+      <el-table-column label="创建日期" width="100">
+             <template slot-scope="list">
+               {{list.row.create_time | fmtdate}}
+             </template>    
       </el-table-column>
       <el-table-column label="用户状态">
         <template slot-scope="scope">
@@ -90,6 +92,7 @@ export default {
         const {
           data: { users }
         } = data;
+        this.total = total
         this.list = users;
       } else {
         this.$message.error(msg);
