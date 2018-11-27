@@ -37,8 +37,7 @@
       </el-table-column>
       <el-table-column label="操作" width="300">
         <template slot-scope="scope">
-          <el-button size="mini" plain type="primary" icon="el-icon-edit" circle @click="Edituser()"></el-button>
-
+          <el-button size="mini" plain type="primary" icon="el-icon-edit" circle @click="showEdit(scope.row)"></el-button>
           <el-button size="mini" plain type="danger" icon="el-icon-delete" circle @click="showdel(scope.row.id)"></el-button>
           <el-button size="mini" plain type="success" icon="el-icon-check" circle></el-button>
         </template>
@@ -75,7 +74,9 @@
 
      <el-dialog title="编辑用户" :visible.sync="dialogFormVisibleEdit">
       <el-form :model="form">
-        
+        <el-form-item label="ID" >
+          <el-input disabled v-model="form.username" auto-complete="off"></el-input>
+        </el-form-item>
         <el-form-item label="邮箱" label-width=100>
           <el-input v-model="form.email" autocomplete="off"></el-input>
         </el-form-item>
@@ -85,7 +86,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisibleEdit = false">取 消</el-button>
-        <el-button type="primary" @click=Adduser()>确 定</el-button>
+        <el-button type="primary" @click=Editusers()>确 定</el-button>
       </div>
     </el-dialog>
   </el-card>
@@ -96,13 +97,13 @@ export default {
   data() {
     return {
       list: [
-        { create_time: "" },
-        { email: "" },
-        { id: "" },
-        { mg_state: "" },
-        { mobile: "" },
-        { role_name: "" },
-        { username: "" }
+        //  create_time: "" ,
+        //  email: "" },
+        // { id: '' },
+        // { mg_state: "" },
+        // { mobile: "" },
+        // { role_name: "" },
+        // { username: "" }
       ],
       query: "",
       pagenum: 1,
@@ -115,7 +116,8 @@ export default {
         username: "",
         password: "",
         email: "",
-        mobile: ""
+        mobile: "",
+        
       }
     };
   },
@@ -124,9 +126,38 @@ export default {
   },
 
   methods: {
-    Edituser(){
-        this.dialogFormVisibleEdit = true;
+    
+    
+    async Editusers(){
+      // console.log(this.form);
+      const res = await this.$http.put(`/users/${this.form.id}`,{
+        mobile:this.form.mobile,
+        email:this.form.email,
+        // id:this.form.id
+      })
+      console.log(res);
+      
+      const {meta:{status,msg}} = res.data
+      if (status === 200) {
+        this.$message.success(msg)
+        this.dialogFormVisibleEdit = false
+        this.loadData()
+        // for(const key in this.form){
+        //   this.form[key] = ''
+        // }
+      }else{
+        this.$message.error(msg)
+      }
     },
+
+    showEdit(lit){
+       this.dialogFormVisibleEdit = true
+       this.form = lit
+      //  this.form.username = lit.username
+      //  this.form.id = lit.id
+       
+    },
+    
     showdel(userID) {
       this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
         confirmButtonText: "确定",
