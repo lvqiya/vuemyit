@@ -11,8 +11,24 @@
     <el-table :data="list" style="width: 100%">
       <el-table-column type="index" width="50">
         <el-table-column type="expand">
-          <template>
-            <el-row></el-row>
+          <template slot-scope="scope">
+            <el-row>
+                <!-- 一级权限 -->
+                <el-col v-for="(item1,index) in scope.row.children" :key="index">
+                    <el-tag>{{item1.authName}}</el-tag>
+                    <i class="el-icon-arrow-right"></i>
+                </el-col>
+                <el-col>
+                    <el-row>
+                        <!-- 二级权限 -->
+                        <el-col></el-col>
+                        <!-- 三级权限 -->
+                        <el-col></el-col>
+
+                    </el-row>
+                </el-col>
+
+            </el-row>
           </template>
         </el-table-column>
       </el-table-column>
