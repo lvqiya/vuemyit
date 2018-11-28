@@ -97,7 +97,7 @@
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click="DialogFormVisiblesetRole = false">取 消</el-button>
-            <el-button type="primary">确 定</el-button>
+            <el-button type="primary" @click="setRole()">确 定</el-button>
         </div>
     </el-dialog>
 </el-card>
@@ -126,6 +126,7 @@ export default {
             DialogFormVisiblesetRole: false,
             cusername:'',
             cID:-1,
+            uID:-1,
             form: {
                 username: "",
                 password: "",
@@ -141,15 +142,31 @@ export default {
     },
 
     methods: {
+        async setRole(){
+            const res = await this.$http.put(`/users/${this.uID}/role`,{
+              rid:this.cID             
+            })
+            // console.log(res);
+            const {meta:{status,msg}} = res.data
+            if (status === 200) {
+              this.$message.success(msg)
+              this.DialogFormVisiblesetRole = false
+            }
+        },
+
         async showset(user) {
             this.DialogFormVisiblesetRole = true
-            this.form = user
+            // this.form = user
+            this.uID = user.id
             this.cusername = user.username
             const res = await this.$http.get(`/roles`)
             // console.log(res);
             this.roles = res.data.data
+            const res1 = await this.$http.get(`/users/${user.id}`)
+            this.cID = res1.data.data.rid
             
         },
+
         async change_state(user) {
             const res = await this.$http.put(`/users/${user.id}/state/${user.mg_state}`)
             console.log(res);
