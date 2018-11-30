@@ -103,12 +103,12 @@ export default {
             menus:[]
         }
     },
-    beforeCreate() {
-        const token = localStorage.getItem('token')
-        if(!token){
-           this.$router.push({name:'login'})
-        }
-    },
+    // beforeCreate() {
+    //     const token = localStorage.getItem('token')
+    //     if(!token){
+    //        this.$router.push({name:'login'})
+    //     }
+    // },
     created() {
         this.getslider()
     },
