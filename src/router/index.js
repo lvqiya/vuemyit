@@ -37,6 +37,7 @@ const router= new Router({
     }
   ]
 })
+// 路由守卫 在路由配置生效之前先进性筛选
 router.beforeEach((to,from,next)=>{
   // console.log(to);
   if (to.path == '/login') {
