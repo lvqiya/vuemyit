@@ -17,21 +17,21 @@
         </el-header>
         <el-container>
             <el-aside class="aside" width="200px">
-
+        
                 <el-menu default-active="2-1" class="menu" :unique-opened="true" :router="true">
                     <!-- 用户管理-->
-                    <el-submenu index="1">
+                    <el-submenu :index="''+item1.order" v-for="(item1,index) in menus" :key="index">
                         <template slot="title">
                             <i class="el-icon-location"></i>
-                            <span>用户管理</span>
+                            <span>{{item1.authName}}</span>
                         </template>
-                        <el-menu-item index="/users">
+                        <el-menu-item :index="'/'+item2.path" v-for="(item2,index) in item1.children" :key="index">
                             <i class="el-icon-location"></i>
-                            用户列表
+                            {{item2.authName}}
                         </el-menu-item>
                     </el-submenu>
                     <!-- 权限管理-->
-                    <el-submenu index="2">
+                    <!-- <el-submenu index="2">
                         <template slot="title">
                             <i class="el-icon-location"></i>
                             <span>权限管理</span>
@@ -44,9 +44,9 @@
                             <i class="el-icon-view"></i>
                             权限列表
                         </el-menu-item>
-                    </el-submenu>
+                    </el-submenu> -->
                     <!-- 商品管理-->
-                    <el-submenu index="3">
+                    <!-- <el-submenu index="3">
                         <template slot="title">
                             <i class="el-icon-location"></i>
                             <span>商品管理</span>
@@ -63,9 +63,9 @@
                             <i class="el-icon-view"></i>
                             商品分类
                         </el-menu-item>
-                    </el-submenu>
+                    </el-submenu> -->
                     <!--订单管理-->
-                    <el-submenu index="4">
+                    <!-- <el-submenu index="4">
                         <template slot="title">
                             <i class="el-icon-location"></i>
                             <span>订单管理</span>
@@ -74,9 +74,9 @@
                             <i class="el-icon-location"></i>
                             订单列表
                         </el-menu-item>
-                    </el-submenu>
+                    </el-submenu> -->
                     <!--数据统计-->
-                    <el-submenu index="5">
+                    <!-- <el-submenu index="5">
                         <template slot="title">
                             <i class="el-icon-location"></i>
                             <span>数据统计</span>
@@ -85,7 +85,7 @@
                             <i class="el-icon-location"></i>
                             数据列表
                         </el-menu-item>
-                    </el-submenu>
+                    </el-submenu> -->
 
                 </el-menu>
             </el-aside>
@@ -98,13 +98,28 @@
 
 <script>
 export default {
+    data(){
+        return{
+            menus:[]
+        }
+    },
     beforeCreate() {
         const token = localStorage.getItem('token')
         if(!token){
            this.$router.push({name:'login'})
         }
     },
+    created() {
+        this.getslider()
+    },
     methods:{
+        // 获取侧边栏
+        async getslider(){
+            const res = await this.$http.get(`menus`)
+            console.log(res);
+            this.menus = res.data.data
+            
+        },
         handlerLoginOut(){
             this.$message.success('退出成功')
             this.$router.push({name:'login'})
