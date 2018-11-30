@@ -15,19 +15,19 @@
             <el-row v-for="(item1,index) in scope.row.children" :key="index">
                 <!-- 一级权限 -->
                 <el-col :span='4'>
-                    <el-tag closable>{{item1.authName}}</el-tag>
+                    <el-tag closable @close="deleroles(scope.row.id,item1.id)">{{item1.authName}}</el-tag>
                     <i class="el-icon-arrow-right"></i>
                 </el-col>
                 <el-col :span='20'>
                     <el-row v-for="(item2,i) in item1.children" :key="i">
                         <!-- 二级权限 -->
                         <el-col :span='4'>
-                            <el-tag closable type="success">{{item2.authName}}</el-tag>
+                            <el-tag closable @close="deleroles(scope.row.id,item2.id)" type="success">{{item2.authName}}</el-tag>
                             <i class="el-icon-arrow-right"></i>
                         </el-col>
                         <!-- 三级权限 -->
                         <el-col :span="20">
-                            <el-tag closable type="success" v-for="(item3,ine) in item2.children" :key="ine">{{item3.authName}}</el-tag>
+                            <el-tag closable type="success" @close="deleroles(scope.row,item3.id)" v-for="(item3,ine) in item2.children" :key="ine">{{item3.authName}}</el-tag>
                             <i class="el-icon-arrow-right"></i>
                         </el-col>
 
@@ -35,6 +35,7 @@
                 </el-col>
 
             </el-row>
+            <el-row v-if="scope.row.children.length ===0">未分配权限</el-row>
           </template>
         </el-table-column>
       </el-table-column>
@@ -64,6 +65,21 @@ export default {
     this.loadData()
   },
   methods: {
+    async deleroles(role,rightID){
+      const res = await this.$http.delete(`roles/${role.id}/rights/${rightID}`)
+      const {data:resData} = res
+      const {meta:{status,msg},data} = resData
+      if (status === 200) {
+        // this.loadData()
+        this.$message.success(msg)
+        role.children = data
+      }else{
+        this.$message.error(msg)
+      }
+      console.log(res);
+      
+      
+    },
     async loadData() {
       const res = await this.$http.get('roles')
       const { data: resData } = res
