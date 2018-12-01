@@ -153,9 +153,9 @@ export default {
       // 获取角色权限
       const arr1 = []
       role.children.forEach((item1) => {
-        arr1.push(item1.id)
+        // arr1.push(item1.id)
         item1.children.forEach((item2) => {
-          arr1.push(item2.id)
+          // arr1.push(item2.id)
             item2.children.forEach((item3) => {
             arr1.push(item3.id)
           })
