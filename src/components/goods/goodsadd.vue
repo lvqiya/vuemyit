@@ -47,9 +47,10 @@
                 </el-form-item>
             </el-tab-pane>
 
-
             <el-tab-pane name="3" label="商品属性">商品属性
-
+                <el-form-item :label="item.attr_name" v-for="(item,i) in arrStaticparams" :key="i">
+                    <el-input v-model="item.attr_vals"></el-input>
+                </el-form-item>
             </el-tab-pane>
             <el-tab-pane name="4" label="商品图片">商品图片</el-tab-pane>
             <el-tab-pane name="5" label="商品内容">商品内容</el-tab-pane>
@@ -84,6 +85,7 @@ export default {
             },
             // 三级分类的数据
             options: [],
+
             // v-model绑定的数据
             selectedOptions: [],
             defaultProps: {
@@ -94,7 +96,7 @@ export default {
             // 动态参数数据
             dynamicsParams: [],
             // 静态参数数据
-            arrStaticparams:[]
+            arrStaticparams: []
 
         }
     },
@@ -119,13 +121,14 @@ export default {
                 // console.log(this.dynamicsParams);
 
                 this.dynamicsParams.forEach(item => {
-                    item.attr_vals = item.attr_vals.trim().split(',')
+                    item.attr_vals = item.attr_vals.trim().length === 0 ? [] : item.attr_vals.trim().split(',')
                 });
 
             } else if (this.active === "3") {
                 const res = await this.$http.get(`categories/${this.selectedOptions[2]}/attributes?sel=only`)
-                console.log(res);
+                // console.log(res);
                 this.arrStaticparams = res.data.data
+
             }
 
         },
