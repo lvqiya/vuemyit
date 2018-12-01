@@ -82,6 +82,7 @@
           :default-checked-keys="arrcheck"
           :props="defaultProps"
         ></el-tree>
+        {{arrcheck}}
         <span slot="footer" class="dialog-footer">
           <el-button @click="dialogVisibleright = false">取 消</el-button>
           <el-button type="primary" @click="setroleright()">确 定</el-button>
@@ -96,7 +97,7 @@ export default {
     return {
       dialogVisibleright: false,
       list: [],
-      treedata: {},
+      treedata: [],
       defaultProps:{label:'authName',children:'children'},
       arrexpent:[],
       arrcheck:[],
