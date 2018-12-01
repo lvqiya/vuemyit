@@ -9,9 +9,10 @@ import  './assets/css/index.css'
 import MyHttpServer from '@/chajian/http.js'
 import moment from 'moment'
 import myBread from '@/components/cuscom/myBread.vue'
+import VueQuillEditor from 'vue-quill-editor'
 Vue.use(ElementUI);
 Vue.use(MyHttpServer);
-
+Vue.use(VueQuillEditor, /* { default global options } */)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

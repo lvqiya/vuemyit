@@ -74,41 +74,49 @@
             <el-button size="small" type="primary">点击上传</el-button>
           </el-upload>
         </el-tab-pane>
-        <el-tab-pane name="5" label="商品内容">商品内容</el-tab-pane>
+        <el-tab-pane name="5" label="商品内容">
+          <el-form-item>
+            <el-button type="primary" round @click="addgoods()" class="ff-btn">添加按钮</el-button>
+            <quill-editor v-model="form.goods_introduce"></quill-editor>
+          </el-form-item>
+        </el-tab-pane>
       </el-tabs>
     </el-form>
   </el-card>
 </template>
 
 <script>
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
 export default {
   data() {
     return {
       active: "1",
       form: {
         // goods_name	商品名称	不能为空
-        // goods_cat	以为','分割的分类列表	不能为空
+        
         // goods_price	价格	不能为空
         // goods_number	数量	不能为空
         // goods_weight	重量	不能为空
-        // goods_introduce	介绍	可以为空
-        // pics	上传的图片临时路径（对象）	可以为空
-        // attrs	商品的参数（数组）
+        
+        
+        
         goods_name: '',
-        goods_cat: '',
+        goods_cat: '',// goods_cat	以为','分割的分类列表	不能为空
         goods_pric: '',
         goods_numbe: '',
         goods_pricer: '',
         goods_weight: '',
-        goods_introduce: '',
-        pics: '',
-        attrs: '',
+        goods_introduce: '',// goods_introduce	介绍	可以为空
+        pics: '',// pics	上传的图片临时路径（对象）	可以为空
+        attrs: '',// attrs	商品的参数（数组）
       },
       // 三级分类的数据
       options: [],
 
       // v-model绑定的数据
-      selectedOptions: [],
+      selectedOptions: [1, 3, 6],
       defaultProps: {
         value: 'cat_id',
         label: 'cat_name',
@@ -119,7 +127,7 @@ export default {
       // 静态参数数据
       arrStaticparams: [],
       //   图片上传头部信息
-      tokenHeader:{Authorization:localStorage.getItem("token")}
+      tokenHeader: { Authorization: localStorage.getItem("token") }
 
     }
   },
@@ -127,28 +135,31 @@ export default {
     this.getgoodslist()
   },
   methods: {
-      handlePreview(file){
+    async addgoods() {
+      const res = await this.$http.post(`goods`, this.form)
+    },
+    handlePreview(file) {
 
-      },
-      handleRemove (file, fileList) {
-    //   const index = this.form.pics.findIndex((item) => {
-    //     return item.pic === file.response.data.tem_path
-    //   })
-    //   this.form.pics.splice(index, 1)
-    //   console.log(this.form)
+    },
+    handleRemove(file, fileList) {
+      //   const index = this.form.pics.findIndex((item) => {
+      //     return item.pic === file.response.data.tem_path
+      //   })
+      //   this.form.pics.splice(index, 1)
+      //   console.log(this.form)
     },
 
-    handleSuccess (response, file, fileList) {
-    //   const { meta, data } = response
+    handleSuccess(response, file, fileList) {
+      //   const { meta, data } = response
 
-    //   if (meta.status === 200) {
-    //     this.$message.success('图片上传成功')
-    //     this.form.pics.push({
-    //       pic: response.data.tmp_path
-    //     })
-    //   } else {
-    //     this.$message.error(meta.msg)
-    //   }
+      //   if (meta.status === 200) {
+      //     this.$message.success('图片上传成功')
+      //     this.form.pics.push({
+      //       pic: response.data.tmp_path
+      //     })
+      //   } else {
+      //     this.$message.error(meta.msg)
+      //   }
     },
     async tabchange() {
       // console.log(1111);
@@ -201,5 +212,12 @@ export default {
 .form {
   height: 400px;
   overflow: auto;
+}
+.ff-btn {
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+.ql-editor {
+  min-height: 300px;
 }
 </style>
