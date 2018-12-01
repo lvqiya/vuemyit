@@ -50,9 +50,9 @@
 
         <el-tab-pane name="2" label="商品参数">商品参数
           <!-- 点击二tab获取数据 -->
-          <el-form-item v-for="item in dynamicsParams" :key="item.attr_id" :label="item.attr_name">
+          <el-form-item v-for="(item,i) in dynamicsParams" :key="i" :label="item.attr_name">
             <el-checkbox-group v-model="item.attr_vals">
-              <el-checkbox border v-for="item2 in item.attr_vals" :key="item2" :label="item2"></el-checkbox>
+              <el-checkbox border v-for="(item2,index) in item.attr_vals" :key="index" :label="item2"></el-checkbox>
             </el-checkbox-group>
           </el-form-item>
         </el-tab-pane>
@@ -103,14 +103,14 @@ export default {
         
         
         goods_name: '',
-        goods_cat: '',// goods_cat	以为','分割的分类列表	不能为空
+        goods_cat: '',// goods_cat	以为','分割的分类列表	不能为空一个组件级联选择器
         goods_pric: '',
         goods_numbe: '',
         goods_pricer: '',
         goods_weight: '',
-        goods_introduce: '',// goods_introduce	介绍	可以为空
-        pics: '',// pics	上传的图片临时路径（对象）	可以为空
-        attrs: '',// attrs	商品的参数（数组）
+        goods_introduce: '',
+        pics: [],// pics	上传的图片临时路径（对象）	可以为空组件四
+        attrs: [],// attrs	商品的参数（数组）
       },
       // 三级分类的数据
       options: [],
@@ -136,30 +136,66 @@ export default {
   },
   methods: {
     async addgoods() {
+        this.form.goods_cat=this.selectedOptions.join(',')
+        // this.form.pics=''
+        // attr开始
+        const dy = this.dynamicsParams
+        const ar = this.arrStaticparams
+        // console.log(ar);
+        
+        const arr1 = dy.map((item1)=>{
+            item1.attr_vals = item1.attr_vals.join(',')
+            return {attr_id:item1.attr_id,attr_value:item1.attr_vals}
+        })
+        const arr2 = ar.map((item2)=>{
+            // console.log(item2);
+            
+            // item2.attr_vals = item2.attr_vals.join(',')
+            // return {attr_id:item2.attr_id,attr_value:item2.attr_vals}
+            // item2.attr_vals = item2.attr_vals.join(',')
+        return {attr_id: item2.attr_id, attr_value: item2.attr_vals}
+        })
+        this.form.attrs = [...arr1,...arr2]
+        console.log(this.form.attrs);
+        const {data: {meta: {status, msg}}} = await this.$http.post('goods', this.form)
+      if (status === 201) {
+        this.$message.success(msg)
+        this.$router.push({
+          name: 'goods'
+        })
+      } else {
+        this.$message.error(msg)
+      }
+        // this.form.attrs=''
       const res = await this.$http.post(`goods`, this.form)
     },
     handlePreview(file) {
 
     },
     handleRemove(file, fileList) {
-      //   const index = this.form.pics.findIndex((item) => {
-      //     return item.pic === file.response.data.tem_path
-      //   })
-      //   this.form.pics.splice(index, 1)
-      //   console.log(this.form)
+         const index = this.form.pics.findIndex((item) => {
+           return item.pic === file.response.data.tmp_path
+         })
+     
+      console.log(index);
+      
+      this.form.pics.splice(index,1)
+      console.log(this.form.pics);
+      
     },
 
     handleSuccess(response, file, fileList) {
-      //   const { meta, data } = response
+         const { meta, data } = response
+        // this.form.pics.push({pic:response.data.tmp_path})
 
-      //   if (meta.status === 200) {
-      //     this.$message.success('图片上传成功')
-      //     this.form.pics.push({
-      //       pic: response.data.tmp_path
-      //     })
-      //   } else {
-      //     this.$message.error(meta.msg)
-      //   }
+        if (meta.status === 200) {
+          this.$message.success('图片上传成功')
+          this.form.pics.push({
+            pic: response.data.tmp_path
+          })
+        } else {
+          this.$message.error(meta.msg)
+        }
     },
     async tabchange() {
       // console.log(1111);

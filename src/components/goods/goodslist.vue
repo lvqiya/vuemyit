@@ -67,7 +67,7 @@ export default {
             this.loading = true
             const {
                 data: resData
-            } = await this.$http.get(`goods?pagenum=4&pagesize=10`)
+            } = await this.$http.get(`goods?pagenum=1&pagesize=200`)
             this.loading = false
             this.list = resData.data.goods
             // console.log(this.list)
