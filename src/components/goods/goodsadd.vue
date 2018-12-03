@@ -143,7 +143,7 @@ export default {
                 }
             })
             this.form.attrs = [...arr1, ...arr2]
-            console.log(this.form.attrs);
+            // console.log(this.form.attrs);
             const {
                 data: {
                     meta: {

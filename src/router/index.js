@@ -37,8 +37,8 @@ const router= new Router({
         path:'/roles',
         component:Roles
       },{
-        name:'categories',
-        path:'/categories',
+        name:'params',
+        path:'/params',
         component:Categories
       },{
         name:'goods',
