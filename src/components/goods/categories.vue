@@ -81,29 +81,29 @@ export default {
     },
     methods: {
         async handleClose(row, index) {
-            // row.params.splice(index, 1)
-            // // 准备请求的数据
-            // // 准备url上需要的id
-            // const catId = row.cat_id
-            // const attrId = row.attr_id
-            // // console.log(catId, attrId)
-            // // put携带的对象
-            // const putData = {
-            //     attr_name: row.attr_name,
-            //     attr_sel: row.attr_sel,
-            //     attr_vals: row.params.join(',')
-            // }
-            // // 让数据一致
-            // row.attr_vals = putData.attr_vals
-            // // 发送请求
-            // const url = `/categories/${catId}/attributes/${attrId}`
-            // const res = await this.$http.put(url, putData)
-            // // console.log(res)
-            // if (res.data.meta.status === 200) {
-            //     this.$message.success('更新成功')
-            // } else {
-            //     this.$message.error('更新失败')
-            // }
+            row.params.splice(index, 1)
+            // 准备请求的数据
+            // 准备url上需要的id
+            const catId = row.cat_id
+            const attrId = row.attr_id
+            // console.log(catId, attrId)
+            // put携带的对象
+            const putData = {
+                attr_name: row.attr_name,
+                attr_sel: row.attr_sel,
+                attr_vals: row.params.join(',')
+            }
+            // 让数据一致
+            row.attr_vals = putData.attr_vals
+            // 发送请求
+            const url = `/categories/${catId}/attributes/${attrId}`
+            const res = await this.$http.put(url, putData)
+            // console.log(res)
+            if (res.data.meta.status === 200) {
+                this.$message.success('更新成功')
+            } else {
+                this.$message.error('更新失败')
+            }
         },
         showInput() {
             this.inputVisible = true
@@ -112,32 +112,32 @@ export default {
             })
         },
         async handleInputConfirm(row) {
-            // // this.dynamicParams.push(attr_vals)
-            // // row.attr_vals.puah(row.attr_vals)
-            // console.log( row.attr_vals);
+            // this.dynamicParams.push(attr_vals)
+            // row.attr_vals.puah(row.attr_vals)
+            console.log( row.attr_vals);
 
-            // // 准备请求的数据
-            // // 准备url上需要的id
-            // const catId = row.cat_id
-            // const attrId = row.attr_id
-            // // console.log(catId, attrId)
-            // // put携带的对象
-            // const putData = {
-            //     attr_name: row.attr_name,
-            //     attr_sel: row.attr_sel,
-            //     // attr_vals: row.attr_val.join(',')
-            // }
-            // // 让数据一致
-            // row.attr_vals = putData.attr_vals
-            // // 发送请求
-            // const url = `/categories/${catId}/attributes/${attrId}`
-            // const res = await this.$http.put(url, putData)
-            // // console.log(res)
-            // if (res.data.meta.status === 200) {
-            //     this.$message.success('更新成功')
-            // } else {
-            //     this.$message.error('更新失败')
-            // }
+            // 准备请求的数据
+            // 准备url上需要的id
+            const catId = row.cat_id
+            const attrId = row.attr_id
+            // console.log(catId, attrId)
+            // put携带的对象
+            const putData = {
+                attr_name: row.attr_name,
+                attr_sel: row.attr_sel,
+                // attr_vals: row.attr_val.join(',')
+            }
+            // 让数据一致
+            row.attr_vals = putData.attr_vals
+            // 发送请求
+            const url = `/categories/${catId}/attributes/${attrId}`
+            const res = await this.$http.put(url, putData)
+            // console.log(res)
+            if (res.data.meta.status === 200) {
+                this.$message.success('更新成功')
+            } else {
+                this.$message.error('更新失败')
+            }
         },
         handleChange() {
             if (this.selectedOptions.length === 3) {
