@@ -8,6 +8,8 @@ import Roles from '@/components/role/roles.vue'
 import Categories from '@/components/goods/categories.vue'
 import Goods from '@/components/goods/goodslist.vue'
 import Goodsadd from '@/components/goods/goodsadd.vue'
+import Goodscate from '@/components/goods/goodscate.vue'
+
 
 import { Message } from 'element-ui';
 Vue.use(Router)
@@ -49,6 +51,11 @@ const router= new Router({
         name:'goodsadd',
         path:'/goodsadd',
         component:Goodsadd,
+        
+      },{
+        name:'goodscate',
+        path:'/categories',
+        component:Goodscate,
         
       }]
       
