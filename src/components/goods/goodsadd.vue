@@ -18,9 +18,8 @@
       label-position="top"
       :model="form"
       label-width="80px"
-      style="height: 350px;"
-    
-      <!-- 为了提交所有信息添加form -->
+      style="height: 350px;" 
+    >
       <el-tabs class="tabs" v-model="active" tab-position="left" @tab-click="tabchange()">
         <el-tab-pane name="1" label="基本信息">基本信息
           <el-form-item label="商品名称">
