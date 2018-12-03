@@ -182,69 +182,6 @@ export default {
       console.log(this.form.pics);
       
     },
-<<<<<<< HEAD
-=======
-    methods: {
-        async addgoods() {
-            this.form.goods_cat = this.selectedOptions.join(',')
-            // this.form.pics=''
-            // attr开始
-            const dy = this.dynamicsParams
-            const ar = this.arrStaticparams
-            // console.log(ar);
-
-            const arr1 = dy.map((item1) => {
-                item1.attr_vals = item1.attr_vals.join(',')
-                return {
-                    attr_id: item1.attr_id,
-                    attr_value: item1.attr_vals
-                }
-            })
-            const arr2 = ar.map((item2) => {
-                // console.log(item2);
-
-                // item2.attr_vals = item2.attr_vals.join(',')
-                // return {attr_id:item2.attr_id,attr_value:item2.attr_vals}
-                // item2.attr_vals = item2.attr_vals.join(',')
-                return {
-                    attr_id: item2.attr_id,
-                    attr_value: item2.attr_vals
-                }
-            })
-            this.form.attrs = [...arr1, ...arr2]
-            // console.log(this.form.attrs);
-            const {
-                data: {
-                    meta: {
-                        status,
-                        msg
-                    }
-                }
-            } = await this.$http.post('goods', this.form)
-            if (status === 201) {
-                this.$message.success(msg)
-                this.$router.push({
-                    name: 'goods'
-                })
-            } else {
-                this.$message.error(msg)
-            }
-            // this.form.attrs=''
-            const res = await this.$http.post(`goods`, this.form)
-        },
-        handlePreview(file) {
-
-        },
-        handleRemove(file, fileList) {
-            const index = this.form.pics.findIndex((item) => {
-                return item.pic === file.response.data.tmp_path
-            })
-
-            console.log(index);
-
-            this.form.pics.splice(index, 1)
-            console.log(this.form.pics);
->>>>>>> dev-goods
 
     handleSuccess(response, file, fileList) {
          const { meta, data } = response
