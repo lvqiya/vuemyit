@@ -19,7 +19,7 @@
       :model="form"
       label-width="80px"
       style="height: 350px;"
-    >
+    
       <!-- 为了提交所有信息添加form -->
       <el-tabs class="tabs" v-model="active" tab-position="left" @tab-click="tabchange()">
         <el-tab-pane name="1" label="基本信息">基本信息
@@ -221,7 +221,7 @@ export default {
         const res = await this.$http.get(`categories/${this.selectedOptions[2]}/attributes?sel=only`)
         // console.log(res);
         this.arrStaticparams = res.data.data
-
+        
       }
 
     },
